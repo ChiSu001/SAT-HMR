@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="SAT-HMR is a real-time one-stage multi-person mesh estimation method.">
+  <meta name="keywords" content="SAT-HMR, HMR">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAT-HMR: Real-Time Multi-Person 3D Mesh Estimation via Scale-Adaptive Tokens</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">SAT-HMR: Real-Time Multi-Person 3D Mesh Estimation via Scale-Adaptive Tokens</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://github.com/ChiSu001/" target="_blank">Chi Su</a><sup>1</sup></span> &nbsp; &nbsp; 
+            <span class="author-block">
+              <a href="https://shirleymaxx.github.io/" target="_blank">Xiaoxuan Ma</a><sup>1</sup></span> &nbsp; &nbsp; 
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=DoUvUz4AAAAJ&hl=en" target="_blank">Jiajun Su</a><sup>2</sup> &nbsp; &nbsp; 
+            </span>
+            <span class="author-block">
+              <a href="https://cfcs.pku.edu.cn/english/people/faculty/yizhouwang/index.htm" target="_blank">Yizhou Wang</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Peking University</span> &nbsp; &nbsp; 
+            <span class="author-block"><sup>2</sup>International Digital Economy Academy (IDEA)</span>
+          </div>
+          
+          
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <!-- <span class="link-block">
+                <a href="tbd"
+                   class="external-link button is-normal is-rounded is-dark"
+                   target="_blank">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark"
+                   target="_blank">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="https://youtu.be/tqURcr_nCQY"
+                   class="external-link button is-normal is-rounded is-dark"
+                   target="_blank">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies"
+                   class="external-link button is-normal is-rounded is-dark"
+                   target="_blank">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/teaser.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+      <p>
+        <b>TL;DR:</b> We propose scale-adaptive tokens to efficiently encode image features,
+        which makes our SAT-HMR <b>the best real-time model</b> for multi-person 3D mesh estimation.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-background-light">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We propose a one-stage framework for real-time multi-person 3D human mesh estimation from a single RGB image.
+            While current one-stage methods, which follow a DETR-style pipeline, 
+            achieve state-of-the-art (SOTA) performance with high-resolution inputs, 
+            we observe that this particularly benefits the estimation of individuals in smaller scales of the image 
+            (e.g., those far from the camera), 
+            but at the cost of significantly increased computation overhead. 
+            To address this, we introduce scale-adaptive tokens that are dynamically adjusted 
+            based on the relative scale of each individual in the image within the DETR framework. 
+            Specifically, individuals in smaller scales are processed at higher resolutions, 
+            larger ones at lower resolutions, and background regions are further distilled. 
+            These scale-adaptive tokens more efficiently encode the image features, 
+            facilitating subsequent decoding to regress the human mesh, 
+            while allowing the model to allocate computational resources more effectively and focus on more challenging cases.  
+            Experiments show that our method preserves the accuracy benefits of high-resolution processing 
+            while substantially reducing computational cost, achieving real-time inference with performance comparable to SOTA methods. 
+          </p>
+          <p>
+               
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Video. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/tqURcr_nCQY?si=Fi1VUizAOKZSaH8j"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Video. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Pipeline. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Pipeline</h2>
+        <img src="./static/images/pipeline.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+        <p>
+          We begin with a low-resolution image and encode low-resolution tokens 
+          through a shallow transformer encoder. 
+          Then a scale head network predicts a patch-level scale map from these tokens, 
+          classifying them into three categories: 
+          <b><span style="color: #a5a4a4">background tokens</span></b>, <b><span style="color: #FF77BA">small-scale tokens</span></b>, and <b><span style="color: #89E0E7">large-scale tokens</span></b>. 
+          Small-scale tokens are replaced by their corresponding high-resolution tokens, 
+          while background tokens are distilled by spatially pooling every four neighboring tokens. 
+          The remaining low-resolution tokens, 
+          representing large-scale instances, remain unchanged. 
+          These tokens are integrated, 
+          resulting in scale-adaptive tokens. 
+          Compared to the uniform tokens, 
+          this approach allocates feature details more efficiently, 
+          preserving different levels of detail for different individuals and regions. 
+          These scale-adaptive tokens are then processed by another encoder and further decoded in subsequent stages.
+        </p>
+      </div>
+    </div>
+    <!--/ Pipeline. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+     <!-- Results. -->
+     <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Results on Internet Images</h2>
+        <div>
+          <video autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/results_0.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+    <!--/ Results. -->
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{su2024sathmr,
+      title={SAT-HMR: Real-Time Multi-Person 3D Mesh Estimation via Scale-Adaptive Tokens},
+      author={Su, Chi and Ma, Xiaoxuan and Su, Jiajun and Wang, Yizhou},
+      journal={arXiv preprint arXiv},
+      year={2024}
+    }</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p style="font-size: 0.9em;">
+            This website is licensed 
+            under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+            and inspired by <a href="https://nerfies.github.io/" target="_blank">Nerfies</a>. 
+          </p>
+        </div>
+      </div>
+    </div>
+</footer>
+
+</body>
+<script>
+  const video = document.getElementById('myVideo');
+
+  video.addEventListener('mouseenter', () => {
+    video.controls = false;
+  });
+
+  video.addEventListener('mouseleave', () => {
+    video.controls = true;
+  });
+</script>
+</html>
